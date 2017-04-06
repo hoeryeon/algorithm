@@ -67,8 +67,8 @@ public class MatrixWithZeros_1_7 {
 				// columnZeros[i] = false;
 
 				if (matrix[i][j] == 0) {
-					columnZeros[i] = true;
-					rowZeros[j] = true;
+					rowZeros[i] = true;
+					columnZeros[j] = true;
 				}
 			}
 		}
@@ -84,7 +84,7 @@ public class MatrixWithZeros_1_7 {
 
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix[i].length; j++) {
-				if (columnZeros[j] || rowZeros[i]) {
+				if (rowZeros[i] || columnZeros[j]) {
 					matrix[i][j] = 0;
 				}
 			}
