@@ -1,5 +1,4 @@
-/**
- * Created by 1002016 on 2017. 5. 31..
+reated by 1002016 on 2017. 5. 31..
  */
 public class CountDigitSixMain {
     public static void main(String[] args) {
@@ -14,17 +13,18 @@ public class CountDigitSixMain {
 //        System.out.println("maxDigit isSuccess = " + (maxDigit(424) == 3));
 //        System.out.println("maxDigit isSuccess = " + (maxDigit(42419124) == 8));
 
-        System.out.println("countTarget isSuccess = " + (countTarget(57, 6) == 0));
-        System.out.println("countTarget isSuccess = " + (countTarget(55, 6) == 0));
-        System.out.println("countTarget isSuccess = " + (countTarget(1, 6) == 0));
-        System.out.println("countTarget isSuccess = " + (countTarget(56, 6) == 1));
-        System.out.println("countTarget isSuccess = " + (countTarget(66, 6) == 2));
+//        System.out.println("countTarget isSuccess = " + (countTarget(57, 6) == 0));
+//        System.out.println("countTarget isSuccess = " + (countTarget(55, 6) == 0));
+//        System.out.println("countTarget isSuccess = " + (countTarget(1, 6) == 0));
+//        System.out.println("countTarget isSuccess = " + (countTarget(56, 6) == 1));
+//        System.out.println("countTarget isSuccess = " + (countTarget(66, 6) == 2));
 
         final int start = 50;
         final int end = 70;
         final int target = 6;
 
         System.out.println("isSuccess = " + (countTarget(start, end, target) == 12));
+        System.out.println("isSuccess = " + (countTarget2(start, end, target) == 12));
     }
 
     /**
@@ -43,7 +43,6 @@ public class CountDigitSixMain {
 
         for (int i = start; i <= end; i++) {
             count += countTarget(i, target);
-            System.out.println("i = " + i + ", target = " + target + ", count = " + count);
         }
 
         return count;
@@ -57,52 +56,46 @@ public class CountDigitSixMain {
      * @return
      */
     private static int countTarget(int n, int target) {
-        int countDigit = maxDigit(n);
-        int countTarget = 0;
-
-        for (int digit = 1; digit <= countDigit; digit++) {
-            int digitValue = getDigitValue(n, digit);
-
-            if ((double) digitValue / target == 1) {
-                countTarget ++;
-            }
-        }
-
-        return countTarget;
-    }
-
-    /**
-     * n 총자리의 수를 리턴한다.
-     *
-     * @param n
-     * @return
-     */
-    private static int maxDigit(int n) {
-        int j = n;
         int count = 0;
 
-        while (j > 0) {
-            j = j / 10;
+        while (n > 0) {
+            if ((n % 10) == target) {
+                count ++;
+            }
 
-           count++;
+            n = n / 10;
         }
 
         return count;
     }
 
-    /**
-     * n 정수의 digit 자리수 숫자를 리턴한다.
-     *
-     * @param n
-     * @return
-     */
-    private static int getDigitValue(int n, int digit) {
-        int count = 1;
-
-        for (int i = 1; i < digit; i++) {
-            count *= 10;
+    private static int countTarget2(int start, int end, int target) {
+        if (end < start) {
+            return 0;
         }
 
-        return n / count % 10;
+        int prevCount = countTarget(start, target);
+        int count = prevCount;
+
+        for (int i = start + 1;  i <= end;  i++) {
+            // xxxx9 -> xxx0
+            if ((i-1)%10 == 9 ) {
+                prevCount = countTarget(i, target);
+            }
+
+            // count(i, target) = prevCount -1
+            else if ((i - 1) % 10 == target && i % 10 != target ) {
+                prevCount -= 1;
+            }
+
+            // count(i, target) = prevCount + 1
+            else if ((i - 1) % 10 != target && i % 10 == target ) {
+                prevCount += 1;
+            }
+
+            count += prevCount;
+        }
+
+        return count;
     }
 }
